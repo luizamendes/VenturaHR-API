@@ -1,8 +1,13 @@
 class User {
-  constructor(id, name, email) {
+  constructor(args) {
+    const { id, name, email, address, phone, password } = args;
+
     this.id = id;
     this.name = name;
     this.email = email;
+    this.address = address;
+    this.phone = phone;
+    this.password = password;
   }
 
   searchJobs() {}

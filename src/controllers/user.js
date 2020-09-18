@@ -1,4 +1,6 @@
 const express = require("express");
+const CompanyService = require("../services/Company");
+const CandidateService = require("../services/Candidate");
 
 const router = express.Router();
 
@@ -7,7 +9,6 @@ router.get("/user", (_, res) => {
 });
 
 router.post("/user", (req, res) => {
-  console.log("req.body", req.body);
   const { user } = req.body;
 
   if (!user) {
@@ -16,8 +17,15 @@ router.post("/user", (req, res) => {
     });
   }
 
-  console.log(user);
-  res.send(user);
+  const { accountType } = user;
+
+  if (accountType && accountType === "Empresa") {
+    CompanyService.create(user);
+  } else {
+    CandidateService.create(user);
+  }
+
+  res.status(201).send();
 });
 
 module.exports = { router };
