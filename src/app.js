@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const controllerRegister = require("./controllers");
 const cors = require("cors");
 
+require("./database");
+
 const app = express();
 const port = process.env.PORT || 5000;
 

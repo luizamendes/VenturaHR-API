@@ -7,9 +7,29 @@ class CompanyService {
       return null;
     }
 
-    const company = new Company(user);
+    try {
+      return CompanyRepository.save(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    return CompanyRepository.save(company);
+  static async getAll() {
+    try {
+      const companies = await CompanyRepository.getAll();
+
+      return companies;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  static async getByEmail(email) {
+    try {
+      return await CompanyRepository.getByEmail(email);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 }
 

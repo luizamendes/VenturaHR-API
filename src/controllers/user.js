@@ -4,8 +4,18 @@ const CandidateService = require("../services/Candidate");
 
 const router = express.Router();
 
-router.get("/user", (_, res) => {
-  res.send("get user");
+router.get("/user", async (_, res) => {
+  try {
+    const companies = await CompanyService.getAll();
+
+    if (!companies.length) {
+      return res.status(204);
+    }
+
+    return res.send(companies);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
 });
 
 router.post("/user", (req, res) => {
@@ -18,14 +28,15 @@ router.post("/user", (req, res) => {
   }
 
   const { accountType } = user;
+  let newUser;
 
   if (accountType && accountType === "Empresa") {
-    CompanyService.create(user);
+    newUser = CompanyService.create(user);
   } else {
-    CandidateService.create(user);
+    newUser = CandidateService.create(user);
   }
 
-  res.status(201).send();
+  res.status(201).send(newUser);
 });
 
 module.exports = { router };

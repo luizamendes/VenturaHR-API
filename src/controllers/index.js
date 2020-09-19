@@ -1,4 +1,8 @@
-const controllers = [require("./user"), require("./monitoring")];
+const controllers = [
+  require("./monitoring"),
+  require("./user"),
+  require("./login"),
+];
 
 const controllerRegister = (application) => {
   controllers.forEach((controller) => {
