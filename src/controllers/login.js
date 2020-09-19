@@ -2,6 +2,8 @@ const express = require("express");
 const CompanyService = require("../services/Company");
 const CandidateService = require("../services/Candidate");
 const hash = require("../utils/hash");
+const { generate } = require("../utils/token");
+
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
@@ -25,7 +27,16 @@ router.post("/login", async (req, res) => {
     return res.status(401).send("Password incorreto");
   }
 
-  res.status(201).send(user);
+  const JWTData = {
+    iss: "venturahr-api",
+    sub: user.id,
+    loginType,
+    exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour
+  };
+
+  const token = await generate(JWTData);
+
+  res.status(201).send({ token });
 });
 
 module.exports = { router };
