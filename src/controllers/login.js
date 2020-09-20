@@ -9,6 +9,9 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
   const { email, password, loginType } = req.body;
 
+  // Validate input
+
+  // Getting user
   let user;
 
   if (loginType && loginType === "Empresa") {
@@ -21,12 +24,14 @@ router.post("/login", async (req, res) => {
     return res.status(404).send("Usuário não existe");
   }
 
+  // Checking password
   const passwordMatch = await hash.compare(password, user.password);
 
   if (!passwordMatch) {
     return res.status(401).send("Password incorreto");
   }
 
+  // Generating JWT
   const JWTData = {
     iss: "venturahr-api",
     sub: user.id,
@@ -36,7 +41,7 @@ router.post("/login", async (req, res) => {
 
   const token = await generate(JWTData);
 
-  res.status(201).send({ token });
+  res.status(200).send({ token });
 });
 
 module.exports = { router };
