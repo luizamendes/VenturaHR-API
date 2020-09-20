@@ -1,6 +1,7 @@
 const express = require("express");
 const CompanyService = require("../services/Company");
 const CandidateService = require("../services/Candidate");
+const { JWTData, generate } = require("../utils/token");
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.get("/user", async (_, res) => {
   }
 });
 
-router.post("/user", (req, res) => {
+router.post("/user", async (req, res) => {
   const { user } = req.body;
 
   if (!user) {
@@ -36,7 +37,12 @@ router.post("/user", (req, res) => {
     newUser = CandidateService.create(user);
   }
 
-  res.status(201).send(newUser);
+  // Generating JWT
+  const JWTInfo = JWTData(newUser, accountType);
+
+  const token = await generate(JWTInfo);
+
+  return res.status(201).send({ token });
 });
 
 module.exports = { router };

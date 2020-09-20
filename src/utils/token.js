@@ -1,5 +1,12 @@
 const JWT = require("jsonwebtoken");
 
+const JWTData = (user, accountType) => ({
+  iss: "venturahr-api",
+  sub: user.id,
+  accountType,
+  exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour
+});
+
 const generate = (payload) => {
   return new Promise((resolve) => {
     JWT.sign(
@@ -19,5 +26,6 @@ const generate = (payload) => {
 };
 
 module.exports = {
+  JWTData,
   generate,
 };

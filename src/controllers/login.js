@@ -2,14 +2,15 @@ const express = require("express");
 const CompanyService = require("../services/Company");
 const CandidateService = require("../services/Candidate");
 const hash = require("../utils/hash");
-const { generate } = require("../utils/token");
-
+const { JWTData, generate } = require("../utils/token");
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
   const { email, password, loginType } = req.body;
 
-  // Validate input
+  if (!email || !password) {
+    return res.status(400).send("E-mail e senha são obrigatórios");
+  }
 
   // Getting user
   let user;
@@ -21,27 +22,22 @@ router.post("/login", async (req, res) => {
   }
 
   if (!user) {
-    return res.status(404).send("Usuário não existe");
+    return res.status(404).send("Usuário não encontrado");
   }
 
   // Checking password
   const passwordMatch = await hash.compare(password, user.password);
 
   if (!passwordMatch) {
-    return res.status(401).send("Password incorreto");
+    return res.status(401).send("Password inválido");
   }
 
   // Generating JWT
-  const JWTData = {
-    iss: "venturahr-api",
-    sub: user.id,
-    loginType,
-    exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour
-  };
+  const JWTInfo = JWTData(user, loginType);
 
-  const token = await generate(JWTData);
+  const token = await generate(JWTInfo);
 
-  res.status(200).send({ token });
+  return res.status(200).send({ token });
 });
 
 module.exports = { router };
