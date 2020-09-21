@@ -1,6 +1,5 @@
 const express = require("express");
-const CompanyService = require("../services/Company");
-const CandidateService = require("../services/Candidate");
+const { CandidateService, CompanyService } = require("../services/User");
 const hash = require("../utils/hash");
 const { JWTData, generate } = require("../utils/token");
 const router = express.Router();
@@ -12,32 +11,36 @@ router.post("/login", async (req, res) => {
     return res.status(400).send("E-mail e senha são obrigatórios");
   }
 
-  // Getting user
-  let user;
+  try {
+    // Getting user
+    let user;
 
-  if (loginType && loginType === "Empresa") {
-    user = await CompanyService.getByEmail(email);
-  } else {
-    console.log("not implemented");
+    if (loginType && loginType === "Empresa") {
+      user = await CompanyService.getByEmail(email);
+    } else {
+      user = await CandidateService.getByEmail(email);
+    }
+
+    if (!user) {
+      return res.status(404).send("Usuário não encontrado");
+    }
+
+    // Checking password
+    const passwordMatch = await hash.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).send("Password inválido");
+    }
+
+    // Generating JWT
+    const JWTInfo = JWTData(user, loginType);
+
+    const token = await generate(JWTInfo);
+
+    return res.status(200).send({ user, token });
+  } catch (error) {
+    return res.status(500).send(error.message);
   }
-
-  if (!user) {
-    return res.status(404).send("Usuário não encontrado");
-  }
-
-  // Checking password
-  const passwordMatch = await hash.compare(password, user.password);
-
-  if (!passwordMatch) {
-    return res.status(401).send("Password inválido");
-  }
-
-  // Generating JWT
-  const JWTInfo = JWTData(user, loginType);
-
-  const token = await generate(JWTInfo);
-
-  return res.status(200).send({ token });
 });
 
 module.exports = { router };
