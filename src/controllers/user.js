@@ -18,9 +18,9 @@ router.post("/user", async (req, res) => {
     let newUser;
 
     if (accountType && accountType === "Empresa") {
-      newUser = CompanyService.create(user);
+      newUser = await CompanyService.create(user);
     } else {
-      newUser = CandidateService.create(user);
+      newUser = await CandidateService.create(user);
     }
 
     // Generating JWT

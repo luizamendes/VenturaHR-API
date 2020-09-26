@@ -10,9 +10,9 @@ class UserRepository {
   async save(user) {
     try {
       user.password = await hash.make(user.password);
-      await this.model.create({ ...user });
+      return await this.model.create({ ...user });
     } catch (error) {
-      throw new Error(`Repository Erro ao salvar usuário - ${error.message}`);
+      throw new Error(`Repository:: Erro ao salvar usuário - ${error.message}`);
     }
   }
 
@@ -20,7 +20,7 @@ class UserRepository {
     try {
       return await this.model.findAll();
     } catch (error) {
-      throw new Error(`Repository Erro ao obter usuários - ${error.message}`);
+      throw new Error(`Repository:: Erro ao obter usuários - ${error.message}`);
     }
   }
 
@@ -34,7 +34,7 @@ class UserRepository {
 
       return user;
     } catch (error) {
-      throw new Error(`Repository Erro ao obter usuário - ${error.message}`);
+      throw new Error(`Repository:: Erro ao obter usuário - ${error.message}`);
     }
   }
 }

@@ -14,9 +14,9 @@ class UserService {
     }
 
     try {
-      return this.usersRepository.save(user);
+      return await this.usersRepository.save(user);
     } catch (error) {
-      throw new Error(`Service Erro ao criar usuário - ${error.message}`);
+      throw new Error(`Service:: Erro ao criar usuário - ${error.message}`);
     }
   }
 
@@ -24,7 +24,9 @@ class UserService {
     try {
       return await this.usersRepository.getAll();
     } catch (error) {
-      throw new Error(`Service Erro ao recuperar usuários - ${error.message}`);
+      throw new Error(
+        `Service:: Erro ao recuperar usuários - ${error.message}`
+      );
     }
   }
 
@@ -32,7 +34,7 @@ class UserService {
     try {
       return await this.usersRepository.getByEmail(email);
     } catch (error) {
-      throw new Error(`Service Erro ao recuperar usuário - ${error.message}`);
+      throw new Error(`Service:: Erro ao recuperar usuário - ${error.message}`);
     }
   }
 }
