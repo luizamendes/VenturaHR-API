@@ -24,6 +24,7 @@ class UserRepository {
     }
   }
 
+  // TODO: Specification Pattern - ver como implementar melhor essas buscas
   async getByEmail(email) {
     try {
       const user = await this.model.findOne({
@@ -31,6 +32,16 @@ class UserRepository {
           email,
         },
       });
+
+      return user;
+    } catch (error) {
+      throw new Error(`Repository:: Erro ao obter usuário - ${error.message}`);
+    }
+  }
+
+  async getById(id) {
+    try {
+      const user = await this.model.findByPk(id);
 
       return user;
     } catch (error) {

@@ -25,7 +25,26 @@ const generate = (payload) => {
   });
 };
 
+const verify = (payload) => {
+  return new Promise((resolve, reject) => {
+    JWT.verify(
+      payload,
+      process.env.SECRET_KEY,
+      { algorithm: "HS256" },
+      (err, result) => {
+        if (err) {
+          console.log(err.message);
+          reject(err);
+        }
+
+        resolve(result);
+      }
+    );
+  });
+};
+
 module.exports = {
   JWTData,
   generate,
+  verify,
 };

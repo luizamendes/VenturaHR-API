@@ -4,7 +4,6 @@ const controllers = [
   require("./login"),
   require("./company"),
   require("./candidate"),
-  require("./job"),
 ];
 
 const controllerRegister = (application) => {
