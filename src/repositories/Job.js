@@ -1,13 +1,17 @@
+const redis = require("redis");
 const Job = require("../models/Job");
 
 class Repository {
   constructor(model) {
     this.model = model;
+    // this.connection = redis.createClient(process.env.REDIS_PORT);
   }
 
   async save(job, companyId) {
     try {
-      return await this.model.create({ ...job, companyId });
+      const newJob = await this.model.create({ ...job, companyId });
+      // await this.connection.setex("luiza", 3600, "mendes");
+      return newJob;
     } catch (error) {
       throw new Error(`Repository:: Erro ao criar vaga - ${error.message}`);
     }
