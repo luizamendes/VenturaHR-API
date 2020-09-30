@@ -36,9 +36,11 @@ router.post("/company/job", authorizationtionFilter, async (req, res) => {
   }
 
   try {
-    const job = await JobService.create(job, id);
-    res.status(201).send(job);
+    const createdJob = await JobService.create(job, id);
+
+    res.status(201).send(createdJob);
   } catch (error) {
+    console.log(error.message);
     res.status(500).send("Erro ao criar vaga");
   }
 });

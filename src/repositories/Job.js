@@ -21,6 +21,16 @@ class Repository {
     }
   }
 
+  async getLatest() {
+    try {
+      return await this.model.findAndCountAll({ limit: 10 });
+    } catch (error) {
+      throw new Error(
+        `Repository:: Erro ao obter ultimas vagas - ${error.message}`
+      );
+    }
+  }
+
   async getByPublisher(companyId) {
     try {
       const jobs = await this.model.findAll({

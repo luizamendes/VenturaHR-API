@@ -1,7 +1,7 @@
 const { JobRepository } = require("../repositories/Job");
 const { CompanyRepository } = require("../repositories/User");
 
-class UserService {
+class Service {
   constructor(repository) {
     this.repository = repository;
   }
@@ -28,6 +28,16 @@ class UserService {
     }
   }
 
+  async getLatest() {
+    try {
+      return await this.repository.getLatest();
+    } catch (error) {
+      throw new Error(
+        `Service:: Erro ao buscar ultimas vagas - ${error.message}`
+      );
+    }
+  }
+
   async getByPublisher(companyId) {
     try {
       return await this.repository.getByPublisher(companyId);
@@ -45,6 +55,6 @@ class UserService {
   }
 }
 
-const JobService = new UserService(JobRepository);
+const JobService = new Service(JobRepository);
 
 module.exports = { JobService };
