@@ -1,6 +1,7 @@
 const express = require("express");
 const authorizationtionFilter = require("../filters/authorization.js");
 const { JobService } = require("../services/Job");
+const { CompanyService } = require("../services/User");
 
 const router = express.Router();
 
@@ -18,8 +19,7 @@ router.get("/company", async (_, res) => {
   }
 });
 
-router.post("/company/job", authorizationtionFilter, async (req, res) => {
-  console.log(2);
+router.post("/company/jobs", authorizationtionFilter, async (req, res) => {
   const { job } = req.body;
   const { type, id } = req.session;
 
@@ -42,6 +42,27 @@ router.post("/company/job", authorizationtionFilter, async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Erro ao criar vaga");
+  }
+});
+
+router.get("/company/jobs", authorizationtionFilter, async (req, res) => {
+  const { type, id } = req.session;
+
+  if (type !== "Empresa") {
+    return res.status(403).send("Forbidden");
+  }
+
+  if (!id) {
+    return res.status(404).send("Bad request");
+  }
+
+  try {
+    const company = await CompanyService.getUserJobs(id);
+
+    res.status(200).send(company.jobs);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Erro ao obter vagas do usuário");
   }
 });
 

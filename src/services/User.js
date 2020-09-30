@@ -37,6 +37,16 @@ class UserService {
       throw new Error(`Service:: Erro ao recuperar usuário - ${error.message}`);
     }
   }
+
+  async getUserJobs(id) {
+    try {
+      return await this.usersRepository.getUserJobs(id);
+    } catch (error) {
+      throw new Error(
+        `Service:: Erro ao recuperar vagas do usuário - ${error.message}`
+      );
+    }
+  }
 }
 
 const CandidateService = new UserService(CandidateRepository);

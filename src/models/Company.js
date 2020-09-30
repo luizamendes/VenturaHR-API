@@ -17,6 +17,13 @@ class Company extends Model {
       }
     );
   }
+
+  static associate(models) {
+    this.hasMany(models.Job, {
+      foreignKey: "companyId",
+      as: "jobs",
+    });
+  }
 }
 
 module.exports = Company;

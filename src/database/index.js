@@ -11,6 +11,7 @@ Company.init(connection);
 Candidate.init(connection);
 Job.init(connection);
 
+Company.associate(connection.models);
 Job.associate(connection.models);
 
 module.exports = connection;

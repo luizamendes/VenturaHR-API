@@ -48,6 +48,20 @@ class UserRepository {
       throw new Error(`Repository:: Erro ao obter usuário - ${error.message}`);
     }
   }
+
+  async getUserJobs(id) {
+    try {
+      const jobs = await this.model.findByPk(id, {
+        include: { association: "jobs" },
+      });
+
+      return jobs;
+    } catch (error) {
+      throw new Error(
+        `Repository:: Erro ao obter vagas do usuário - ${error.message}`
+      );
+    }
+  }
 }
 
 const CandidateRepository = new UserRepository(Candidate);
