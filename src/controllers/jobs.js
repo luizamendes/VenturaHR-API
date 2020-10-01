@@ -17,7 +17,7 @@ router.get("/jobs", authorizationtionFilter, async (_, res) => {
 
 router.get("/jobs/latest", async (_, res) => {
   try {
-    const jobs = await JobService.getAll();
+    const jobs = await JobService.getLatest();
 
     res.status(200).send(jobs);
   } catch (error) {

@@ -27,7 +27,10 @@ class Repository {
 
   async getLatest() {
     try {
-      return await this.model.findAndCountAll({ limit: 10 });
+      return await this.model.findAll({
+        limit: 10,
+        order: [["createdAt", "DESC"]],
+      });
     } catch (error) {
       throw new Error(
         `Repository:: Erro ao obter ultimas vagas - ${error.message}`

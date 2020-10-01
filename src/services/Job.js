@@ -1,5 +1,6 @@
 const { JobRepository } = require("../repositories/Job");
 const { CompanyRepository } = require("../repositories/User");
+const Job = require("../models/Job");
 
 class Service {
   constructor(repository) {
@@ -14,15 +15,21 @@ class Service {
         throw new Error("Empresa não existe");
       }
 
+      job.criteriaList = JSON.stringify(job.criteriaList);
+
       return await this.repository.save(job, companyId);
     } catch (error) {
       throw new Error(`Service:: Erro ao criar vaga - ${error.message}`);
     }
   }
 
+  // TODO: Refactor the parsing logic
+
   async getAll() {
     try {
-      return await this.repository.getAll();
+      const jobs = await this.repository.getAll();
+
+      return Job.parseJobsCriteria(jobs);
     } catch (error) {
       throw new Error(`Service:: Erro ao buscar vagas - ${error.message}`);
     }
@@ -30,7 +37,9 @@ class Service {
 
   async getLatest() {
     try {
-      return await this.repository.getLatest();
+      const jobs = await this.repository.getLatest();
+
+      return Job.parseJobsCriteria(jobs);
     } catch (error) {
       throw new Error(
         `Service:: Erro ao buscar ultimas vagas - ${error.message}`
@@ -38,17 +47,12 @@ class Service {
     }
   }
 
-  async getByPublisher(companyId) {
-    try {
-      return await this.repository.getByPublisher(companyId);
-    } catch (error) {
-      throw new Error(`Service:: Erro ao buscar vagas - ${error.message}`);
-    }
-  }
-
   async getById(jobId) {
     try {
-      return await this.repository.getById(jobId);
+      const job = await this.repository.getById(jobId);
+      job.criteriaList = JSON.parse(job.criteriaList);
+
+      return job;
     } catch (error) {
       throw new Error(`Service:: Erro ao buscar vaga - ${error.message}`);
     }

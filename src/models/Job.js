@@ -12,6 +12,7 @@ class Job extends Model {
         contractType: DataTypes.STRING,
         contractDuration: DataTypes.STRING,
         openUntil: DataTypes.STRING,
+        criteriaList: DataTypes.STRING,
       },
       {
         sequelize: connection,
@@ -23,6 +24,14 @@ class Job extends Model {
     this.belongsTo(models.Company, {
       foreignKey: "companyId",
       as: "publisher",
+    });
+  }
+
+  static parseJobsCriteria(jobs) {
+    return jobs.map((job) => {
+      job.dataValues.criteriaList = JSON.parse(job.dataValues.criteriaList);
+
+      return job;
     });
   }
 }
