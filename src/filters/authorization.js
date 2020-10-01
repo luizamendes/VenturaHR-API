@@ -5,7 +5,7 @@ const authorization = async (req, res, next) => {
   const { authorization: jwtToken } = req.headers;
 
   if (!jwtToken) {
-    return res.status(404).send("JWT Token é requerido");
+    return res.status(401).send("JWT Token é requerido");
   }
 
   console.log("authorization -> authorizationHeader", jwtToken);
