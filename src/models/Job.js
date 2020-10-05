@@ -25,6 +25,10 @@ class Job extends Model {
       foreignKey: "companyId",
       as: "publisher",
     });
+    this.hasMany(models.Application, {
+      foreignKey: "jobId",
+      as: "applicant",
+    });
   }
 
   static parseJobsCriteria(jobs) {

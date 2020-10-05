@@ -4,6 +4,7 @@ const { JobService } = require("../services/Job");
 
 const router = express.Router();
 
+// Get all jobs
 router.get("/jobs", authorizationtionFilter, async (_, res) => {
   try {
     const jobs = await JobService.getAll();
@@ -15,6 +16,7 @@ router.get("/jobs", authorizationtionFilter, async (_, res) => {
   }
 });
 
+// Get latest jobs
 router.get("/jobs/latest", async (_, res) => {
   try {
     const jobs = await JobService.getLatest();
@@ -26,6 +28,7 @@ router.get("/jobs/latest", async (_, res) => {
   }
 });
 
+// Get job by id
 router.get("/jobs/:id", authorizationtionFilter, async (req, res) => {
   const { id } = req.params;
 

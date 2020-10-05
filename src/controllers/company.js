@@ -5,6 +5,7 @@ const { CompanyService } = require("../services/User");
 
 const router = express.Router();
 
+// Get all companies
 router.get("/company", async (_, res) => {
   try {
     const companies = await CompanyService.getAll();
@@ -19,6 +20,7 @@ router.get("/company", async (_, res) => {
   }
 });
 
+// Create new job
 router.post("/company/jobs", authorizationtionFilter, async (req, res) => {
   const { job } = req.body;
   const { type, id } = req.session;
@@ -45,6 +47,7 @@ router.post("/company/jobs", authorizationtionFilter, async (req, res) => {
   }
 });
 
+// Get jobs of company
 router.get("/company/jobs", authorizationtionFilter, async (req, res) => {
   const { type, id } = req.session;
 

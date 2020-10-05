@@ -3,7 +3,8 @@ const { CandidateService } = require("../services/User");
 
 const router = express.Router();
 
-router.get("/candidate", async (_, res) => {
+// Get candidates
+router.get("/candidates", async (_, res) => {
   try {
     const candidates = await CandidateService.getAll();
 
@@ -12,6 +13,19 @@ router.get("/candidate", async (_, res) => {
     }
 
     return res.send(candidates);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+// Apply for job
+router.post("candidates/job", async (req, res) => {
+  try {
+    const { application } = req.body;
+
+    if (!application) {
+      return res.status(400).send("Candidatura é requerida");
+    }
   } catch (error) {
     return res.status(500).send(error.message);
   }

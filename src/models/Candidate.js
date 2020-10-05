@@ -16,6 +16,13 @@ class Candidate extends Model {
       }
     );
   }
+
+  static associate(models) {
+    this.hasMany(models.Application, {
+      foreignKey: "candidateId",
+      as: "jobs",
+    });
+  }
 }
 
 module.exports = Candidate;

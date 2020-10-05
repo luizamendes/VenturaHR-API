@@ -4,6 +4,7 @@ const { JWTData, generate } = require("../utils/token");
 
 const router = express.Router();
 
+// Registering user
 router.post("/user", async (req, res) => {
   const { user } = req.body;
 
