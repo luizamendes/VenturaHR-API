@@ -1,5 +1,6 @@
+// var moment = require("moment");
 const { JobRepository } = require("../repositories/Job");
-const { CompanyRepository } = require("../repositories/User");
+const { UserRepository } = require("../repositories/User");
 const Job = require("../models/Job");
 
 class Service {
@@ -7,9 +8,9 @@ class Service {
     this.repository = repository;
   }
 
-  async create(job, companyId) {
+  async create(job, userId) {
     try {
-      const company = await CompanyRepository.getById(companyId);
+      const company = await UserRepository.getById(userId);
 
       if (!company) {
         throw new Error("Empresa não existe");
@@ -17,7 +18,14 @@ class Service {
 
       job.criteriaList = JSON.stringify(job.criteriaList);
 
-      return await this.repository.save(job, companyId);
+      // const today = moment();
+      // const endDate = moment(job.openUntil);
+      // const expiresIn = endDate.add(2, "days");
+      // const expirationMinutes = moment
+      //   .duration(expiresIn.diff(today))
+      //   .asSeconds();
+
+      return await this.repository.save(job, userId);
     } catch (error) {
       throw new Error(`Service:: Erro ao criar vaga - ${error.message}`);
     }

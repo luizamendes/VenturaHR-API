@@ -14,8 +14,8 @@ class Application extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Candidate, {
-      foreignKey: "candidateId",
+    this.belongsTo(models.User, {
+      foreignKey: "userId",
       as: "applicant",
     });
     this.belongsTo(models.Job, {

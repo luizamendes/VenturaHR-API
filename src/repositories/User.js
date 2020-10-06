@@ -1,8 +1,7 @@
-const Company = require("../models/Company");
-const Candidate = require("../models/Candidate");
+const User = require("../models/User");
 const hash = require("../utils/hash");
 
-class UserRepository {
+class Repository {
   constructor(model) {
     this.model = model;
   }
@@ -49,7 +48,7 @@ class UserRepository {
     }
   }
 
-  async getUserJobs(id) {
+  async getCompanyJobs(id) {
     try {
       const jobs = await this.model.findByPk(id, {
         include: { association: "jobs" },
@@ -62,9 +61,21 @@ class UserRepository {
       );
     }
   }
+  async getCandidateApplications(id) {
+    try {
+      const jobs = await this.model.findByPk(id, {
+        include: { association: "applications" },
+      });
+
+      return jobs;
+    } catch (error) {
+      throw new Error(
+        `Repository:: Erro ao obter vagas do usuário - ${error.message}`
+      );
+    }
+  }
 }
 
-const CandidateRepository = new UserRepository(Candidate);
-const CompanyRepository = new UserRepository(Company);
+const UserRepository = new Repository(User);
 
-module.exports = { CompanyRepository, CandidateRepository };
+module.exports = { UserRepository };

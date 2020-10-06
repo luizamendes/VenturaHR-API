@@ -1,24 +1,9 @@
 const express = require("express");
 const authorizationtionFilter = require("../filters/authorization.js");
 const { JobService } = require("../services/Job");
-const { CompanyService } = require("../services/User");
+const { UserService } = require("../services/User");
 
 const router = express.Router();
-
-// Get all companies
-router.get("/company", async (_, res) => {
-  try {
-    const companies = await CompanyService.getAll();
-
-    if (!companies.length) {
-      return res.status(204);
-    }
-
-    return res.send(companies);
-  } catch (error) {
-    return res.status(500).send(error.message);
-  }
-});
 
 // Create new job
 router.post("/company/jobs", authorizationtionFilter, async (req, res) => {
@@ -60,7 +45,7 @@ router.get("/company/jobs", authorizationtionFilter, async (req, res) => {
   }
 
   try {
-    const company = await CompanyService.getUserJobs(id);
+    const company = await UserService.getCompanyJobs(id);
 
     res.status(200).send(company.jobs);
   } catch (error) {

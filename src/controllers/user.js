@@ -1,5 +1,5 @@
 const express = require("express");
-const { CandidateService, CompanyService } = require("../services/User");
+const { UserService } = require("../services/User");
 const { JWTData, generate } = require("../utils/token");
 
 const router = express.Router();
@@ -16,13 +16,7 @@ router.post("/user", async (req, res) => {
 
   try {
     const { accountType } = user;
-    let newUser;
-
-    if (accountType && accountType === "Empresa") {
-      newUser = await CompanyService.create(user);
-    } else {
-      newUser = await CandidateService.create(user);
-    }
+    const newUser = await UserService.create(user);
 
     // Generating JWT
     const JWTInfo = JWTData(newUser, accountType);

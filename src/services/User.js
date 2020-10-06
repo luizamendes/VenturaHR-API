@@ -1,9 +1,6 @@
-const {
-  CandidateRepository,
-  CompanyRepository,
-} = require("../repositories/User");
+const { UserRepository } = require("../repositories/User");
 
-class UserService {
+class Service {
   constructor(usersRepository) {
     this.usersRepository = usersRepository;
   }
@@ -42,7 +39,7 @@ class UserService {
     For companies return jobs that the company has created
     For candidates return jobs that the candidate has applied to
   */
-  async getUserJobs(id) {
+  async getCompanyJobs(id) {
     try {
       return await this.usersRepository.getUserJobs(id);
     } catch (error) {
@@ -51,9 +48,17 @@ class UserService {
       );
     }
   }
+  async getCandidateApplications(id) {
+    try {
+      return await this.usersRepository.getUserApplications(id);
+    } catch (error) {
+      throw new Error(
+        `Service:: Erro ao recuperar vagas do usuário - ${error.message}`
+      );
+    }
+  }
 }
 
-const CandidateService = new UserService(CandidateRepository);
-const CompanyService = new UserService(CompanyRepository);
+const UserService = new Service(UserRepository);
 
-module.exports = { CompanyService, CandidateService };
+module.exports = { UserService };

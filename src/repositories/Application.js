@@ -6,9 +6,9 @@ class Repository {
   }
 
   // Create application
-  async save(application, jobId, candidateId) {
+  async save(application, jobId, userId) {
     try {
-      return await this.model.create({ ...application, jobId, candidateId });
+      return await this.model.create({ ...application, jobId, userId });
     } catch (error) {
       throw new Error(
         `Repository:: Erro ao criar candidatura - ${error.message}`
@@ -17,11 +17,11 @@ class Repository {
   }
 
   // Get all applications of candidate
-  async getByCandidate(candidateId) {
+  async getByCandidate(userId) {
     try {
       return await this.model.findAll({
         where: {
-          candidateId,
+          userId,
         },
       });
     } catch (error) {

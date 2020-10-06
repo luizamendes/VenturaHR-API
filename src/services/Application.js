@@ -1,5 +1,5 @@
 const ApplicationRepository = require("../repositories/Application");
-const { CandidateRepository } = require("../repositories/User");
+const { UserRepository } = require("../repositories/User");
 const { JobRepository } = require("../repositories/Job");
 
 class Service {
@@ -17,7 +17,7 @@ class Service {
 
       // check on redis if job is still valid
 
-      const candidate = await CandidateRepository.getById(candidateId);
+      const candidate = await UserRepository.getById(candidateId);
 
       if (!candidate) {
         throw new Error("Candidato não encontrado");

@@ -21,8 +21,8 @@ class Job extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Company, {
-      foreignKey: "companyId",
+    this.belongsTo(models.User, {
+      foreignKey: "userId",
       as: "publisher",
     });
     this.hasMany(models.Application, {

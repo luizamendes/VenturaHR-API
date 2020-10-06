@@ -1,11 +1,11 @@
 const express = require("express");
-const { CandidateService, CompanyService } = require("../services/User");
+const { UserService } = require("../services/User");
 const hash = require("../utils/hash");
 const { JWTData, generate } = require("../utils/token");
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
-  const { email, password, loginType } = req.body;
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).send("E-mail e senha são obrigatórios");
@@ -13,13 +13,7 @@ router.post("/login", async (req, res) => {
 
   try {
     // Getting user
-    let user;
-
-    if (loginType && loginType === "Empresa") {
-      user = await CompanyService.getByEmail(email);
-    } else {
-      user = await CandidateService.getByEmail(email);
-    }
+    const user = await UserService.getByEmail(email);
 
     if (!user) {
       return res.status(404).send("Usuário não encontrado");
@@ -33,7 +27,8 @@ router.post("/login", async (req, res) => {
     }
 
     // Generating JWT
-    const JWTInfo = JWTData(user, loginType);
+    const { accountType } = user;
+    const JWTInfo = JWTData(user, accountType);
 
     const token = await generate(JWTInfo);
 
