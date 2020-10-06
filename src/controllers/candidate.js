@@ -1,5 +1,7 @@
 const express = require("express");
+const authorizationtionFilter = require("../filters/authorization.js");
 const { CandidateService } = require("../services/User");
+const ApplicationService = require("../services/Application");
 
 const router = express.Router();
 
@@ -19,13 +21,41 @@ router.get("/candidates", async (_, res) => {
 });
 
 // Apply for job
-router.post("candidates/job", async (req, res) => {
+router.post("/candidates/job", authorizationtionFilter, async (req, res) => {
   try {
-    const { application } = req.body;
+    const { type, id } = req.session;
+    const { application, jobId } = req.body;
+
+    if (type !== "Candidato") {
+      return res
+        .status(400)
+        .send("Somente candidatos podem aplicar para vagas");
+    }
 
     if (!application) {
       return res.status(400).send("Candidatura é requerida");
     }
+
+    const newApplication = await ApplicationService.create(
+      application,
+      jobId,
+      id
+    );
+
+    return res.status(201).send(newApplication);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+// Get jobs of candidate
+router.get("/candidates/job", authorizationtionFilter, async (req, res) => {
+  try {
+    const { id } = req.session;
+
+    const userJobs = await CandidateService.getUserJobs(id);
+
+    return res.status(200).send(userJobs);
   } catch (error) {
     return res.status(500).send(error.message);
   }

@@ -12,16 +12,16 @@ module.exports = {
       candidateId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: "Companies", key: "id" },
+        references: { model: "Candidates", key: "id" },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
+        onDelete: "CASCADE",
       },
       jobId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: "Companies", key: "id" },
+        references: { model: "Jobs", key: "id" },
         onUpdate: "CASCADE",
-        onDelete: "RESTRICT",
+        onDelete: "CASCADE",
       },
       answers: {
         type: Sequelize.STRING,

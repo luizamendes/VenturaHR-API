@@ -38,6 +38,10 @@ class UserService {
     }
   }
 
+  /* 
+    For companies return jobs that the company has created
+    For candidates return jobs that the candidate has applied to
+  */
   async getUserJobs(id) {
     try {
       return await this.usersRepository.getUserJobs(id);
