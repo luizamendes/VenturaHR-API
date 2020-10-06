@@ -65,6 +65,16 @@ class Service {
       throw new Error(`Service:: Erro ao buscar vaga - ${error.message}`);
     }
   }
+
+  async getByQuery(query) {
+    try {
+      const jobs = await this.repository.getByQuery(query);
+
+      return Job.parseJobsCriteria(jobs);
+    } catch (error) {
+      throw new Error(`Service:: Erro ao buscar vagas - ${error.message}`);
+    }
+  }
 }
 
 const JobService = new Service(JobRepository);

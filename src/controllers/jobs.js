@@ -46,4 +46,25 @@ router.get("/jobs/:id", authorizationtionFilter, async (req, res) => {
   }
 });
 
+// Get job by query
+router.get("/jobs/search/:query", authorizationtionFilter, async (req, res) => {
+  const { query } = req.params;
+  console.log("query", query);
+
+  try {
+    if (!query) {
+      const allJobs = await JobService.getAll();
+
+      return res.status(200).send(allJobs);
+    }
+
+    const queryJobs = await JobService.getByQuery(query);
+
+    res.status(200).send(queryJobs);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Erro ao obter vaga");
+  }
+});
+
 module.exports = { router };

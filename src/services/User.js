@@ -41,7 +41,7 @@ class Service {
   */
   async getCompanyJobs(id) {
     try {
-      return await this.usersRepository.getUserJobs(id);
+      return await this.usersRepository.getCompanyJobs(id);
     } catch (error) {
       throw new Error(
         `Service:: Erro ao recuperar vagas do usuário - ${error.message}`
