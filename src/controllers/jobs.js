@@ -28,24 +28,6 @@ router.get("/jobs/latest", async (_, res) => {
   }
 });
 
-// Get job by id
-router.get("/jobs/:id", authorizationtionFilter, async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    return res.status(400).send("Id é requerido");
-  }
-
-  try {
-    const job = await JobService.getById(id);
-
-    res.status(200).send(job);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Erro ao obter vaga");
-  }
-});
-
 // Get job by query
 router.get("/jobs/search/:query", authorizationtionFilter, async (req, res) => {
   const { query } = req.params;
@@ -61,6 +43,24 @@ router.get("/jobs/search/:query", authorizationtionFilter, async (req, res) => {
     const queryJobs = await JobService.getByQuery(query);
 
     res.status(200).send(queryJobs);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Erro ao obter vaga");
+  }
+});
+
+// Get job by id
+router.get("/jobs/:id", authorizationtionFilter, async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).send("Id é requerido");
+  }
+
+  try {
+    const job = await JobService.getById(id);
+
+    res.status(200).send(job);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Erro ao obter vaga");

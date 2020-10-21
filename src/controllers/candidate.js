@@ -45,9 +45,9 @@ router.get(
     try {
       const { id } = req.session;
 
-      const userJobs = await UserService.getCandidateApplications(id);
+      const candidate = await UserService.getCandidateApplications(id);
 
-      return res.status(200).send(userJobs);
+      return res.status(200).send(candidate.applications);
     } catch (error) {
       return res.status(500).send(error.message);
     }

@@ -5,6 +5,7 @@ const controllers = [
   require("./company"),
   require("./candidate"),
   require("./jobs"),
+  require("./applications"),
 ];
 
 const controllerRegister = (application) => {

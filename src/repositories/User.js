@@ -64,7 +64,10 @@ class Repository {
   async getCandidateApplications(id) {
     try {
       const jobs = await this.model.findByPk(id, {
-        include: { association: "applications" },
+        include: {
+          association: "applications",
+          include: { association: "application" },
+        },
       });
 
       return jobs;

@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
 
   try {
     // Getting user
-    const user = await UserService.getByEmail(email);
+    const user = await UserService.getByEmail(email.toLowerCase().trim());
 
     if (!user) {
       return res.status(404).send("Usuário não encontrado");

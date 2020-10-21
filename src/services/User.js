@@ -35,10 +35,6 @@ class Service {
     }
   }
 
-  /* 
-    For companies return jobs that the company has created
-    For candidates return jobs that the candidate has applied to
-  */
   async getCompanyJobs(id) {
     try {
       return await this.usersRepository.getCompanyJobs(id);
@@ -50,7 +46,7 @@ class Service {
   }
   async getCandidateApplications(id) {
     try {
-      return await this.usersRepository.getUserApplications(id);
+      return await this.usersRepository.getCandidateApplications(id);
     } catch (error) {
       throw new Error(
         `Service:: Erro ao recuperar vagas do usuário - ${error.message}`
