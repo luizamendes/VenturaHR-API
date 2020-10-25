@@ -17,9 +17,11 @@ router.get("/jobs", authorizationtionFilter, async (_, res) => {
 });
 
 // Get latest jobs
-router.get("/jobs/latest", async (_, res) => {
+router.get("/jobs/latest/:qty", async (req, res) => {
+  const { qty } = req.params;
+
   try {
-    const jobs = await JobService.getLatest();
+    const jobs = await JobService.getLatest(qty);
 
     res.status(200).send(jobs);
   } catch (error) {
@@ -31,7 +33,6 @@ router.get("/jobs/latest", async (_, res) => {
 // Get job by query
 router.get("/jobs/search/:query", authorizationtionFilter, async (req, res) => {
   const { query } = req.params;
-  console.log("query", query);
 
   try {
     if (!query) {

@@ -43,9 +43,9 @@ class Service {
     }
   }
 
-  async getLatest() {
+  async getLatest(qty) {
     try {
-      const jobs = await this.repository.getLatest();
+      const jobs = await this.repository.getLatest(qty);
 
       return Job.parseJobsCriteria(jobs);
     } catch (error) {

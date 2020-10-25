@@ -1,7 +1,6 @@
 const { verify } = require("../utils/token");
 
 const authorization = async (req, res, next) => {
-  console.log(1);
   const { authorization: jwtToken } = req.headers;
 
   if (!jwtToken) {

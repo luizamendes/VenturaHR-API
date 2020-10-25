@@ -26,10 +26,10 @@ class Repository {
     }
   }
 
-  async getLatest() {
+  async getLatest(qty) {
     try {
       return await this.model.findAll({
-        limit: 10,
+        limit: qty,
         order: [["createdAt", "DESC"]],
       });
     } catch (error) {
