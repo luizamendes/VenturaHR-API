@@ -1,14 +1,14 @@
 const ApplicationRepository = require("../repositories/Application");
 const { UserRepository } = require("../repositories/User");
 const { JobRepository } = require("../repositories/Job");
-const { calculateResult } = require("../models/Application");
-
+const CriteriaCalculator = require("../models/CriteriaCalculator");
 class Service {
   constructor(repository) {
     this.repository = repository;
   }
 
   async create(application, jobId, candidateId) {
+    console.log("Service -> create -> application", application);
     try {
       const job = await JobRepository.getById(jobId);
 
@@ -24,10 +24,16 @@ class Service {
         throw new Error("Candidato não encontrado");
       }
 
-      const app = calculateResult(application.answers);
+      const calculator = new CriteriaCalculator(
+        JSON.parse(application.answers),
+        "application"
+      );
+      calculator.calculateResult();
+      application.result = calculator.result;
 
-      return await this.repository.save(app, jobId, candidateId);
+      return await this.repository.save(application, jobId, candidateId);
     } catch (error) {
+      console.log("Service -> create -> error", error);
       throw new Error(`Service:: Erro ao fazer candidatura - ${error.message}`);
     }
   }

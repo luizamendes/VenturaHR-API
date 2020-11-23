@@ -54,4 +54,20 @@ router.get(
   }
 );
 
+router.get(
+  "/candidates/application/:applicationId",
+  //   authorizationtionFilter,
+  async (req, res) => {
+    const { applicationId } = req.params;
+
+    try {
+      const applications = await ApplicationService.getById(applicationId);
+
+      return res.status(201).send(applications);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
+);
+
 module.exports = { router };

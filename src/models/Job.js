@@ -13,6 +13,7 @@ class Job extends Model {
         contractDuration: DataTypes.STRING,
         openUntil: DataTypes.STRING,
         criteriaList: DataTypes.STRING,
+        average: DataTypes.DOUBLE,
       },
       {
         sequelize: connection,

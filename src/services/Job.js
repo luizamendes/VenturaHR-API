@@ -2,6 +2,7 @@
 const { JobRepository } = require("../repositories/Job");
 const { UserRepository } = require("../repositories/User");
 const Job = require("../models/Job");
+const CriteriaCalculator = require("../models/CriteriaCalculator");
 
 class Service {
   constructor(repository) {
@@ -16,8 +17,11 @@ class Service {
         throw new Error("Empresa não existe");
       }
 
-      job.criteriaList = JSON.stringify(job.criteriaList);
+      const calculator = new CriteriaCalculator(job.criteriaList);
+      calculator.calculateResult();
 
+      job.criteriaList = JSON.stringify(job.criteriaList);
+      job.average = calculator.result;
       // const today = moment();
       // const endDate = moment(job.openUntil);
       // const expiresIn = endDate.add(2, "days");
