@@ -38,6 +38,8 @@ class Repository {
         where: {
           jobId,
         },
+        include: { association: "applicant" },
+        order: [["result", "DESC"]],
       });
     } catch (error) {
       throw new Error(
@@ -49,7 +51,9 @@ class Repository {
   // Get by application id
   async getById(id) {
     try {
-      return await this.model.findByPk(id);
+      return await this.model.findByPk(id, {
+        include: { association: "application" },
+      });
     } catch (error) {
       throw new Error(
         `Repository:: Erro ao obter candidatura - ${error.message}`
